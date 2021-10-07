@@ -5,7 +5,6 @@ import org.example.javatest.model.WordEntry;
 import org.example.javatest.util.LoggedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 

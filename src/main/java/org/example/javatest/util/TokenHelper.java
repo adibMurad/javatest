@@ -1,8 +1,6 @@
 package org.example.javatest.util;
 
 import io.jsonwebtoken.*;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.util.StringUtils;
 

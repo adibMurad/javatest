@@ -23,7 +23,7 @@ public class AuthenticationController {
     public ResponseEntity<String> register(@RequestBody UserData userData) {
         try {
             service.register(userData);
-            return ResponseEntity.created(URI.create(userData.getUserName())).build();
+            return ResponseEntity.created(URI.create(userData.getUserName())).body(userData.getUserName());
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
