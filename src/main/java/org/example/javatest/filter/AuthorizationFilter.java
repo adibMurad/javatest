@@ -1,13 +1,21 @@
 package org.example.javatest.filter;
 
+import lombok.AllArgsConstructor;
+import org.example.javatest.util.LoggedUser;
+import org.example.javatest.util.TokenHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.example.javatest.util.TokenUtil.isValid;
-
+@AllArgsConstructor
 public class AuthorizationFilter implements Filter {
+    @Autowired
+    private final LoggedUser loggedUser;
+    @Autowired
+    private final TokenHelper tokenHelper;
 
     @Override
     public void doFilter(ServletRequest request,
@@ -19,10 +27,11 @@ public class AuthorizationFilter implements Filter {
         String auth = req.getHeader("Authorization");
         String token = auth.substring("Bearer".length()).trim();
 
-        if (!isValid(token)) {
+        if (!tokenHelper.isValid(token)) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        loggedUser.setUserName(tokenHelper.getUserName(token));
         chain.doFilter(request, response);
     }
 
