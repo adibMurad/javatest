@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GameServiceExceptionHandler extends CustomExceptionHandler<GameServiceException> {
+public class GameServiceExceptionHandler extends AbstractExceptionHandler<GameServiceException> {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody

@@ -23,7 +23,7 @@ public class Palindrome {
 
     /**
      * Builds a Palindrome instance if {@link #word} is a valid palindrome.
-     * That means that after removing all non-alphabetic characters:
+     * That means that after removing all non-alphanumeric characters:
      * - {@link #word} cannot be null, empty or contain only one distinct character.
      * - {@link #word} must read the same in reverse order.
      *

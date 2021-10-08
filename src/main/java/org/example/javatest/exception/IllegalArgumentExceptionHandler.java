@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class IllegalArgumentExceptionHandler extends CustomExceptionHandler<IllegalArgumentException> {
+public class IllegalArgumentExceptionHandler extends AbstractExceptionHandler<IllegalArgumentException> {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

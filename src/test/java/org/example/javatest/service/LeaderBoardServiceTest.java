@@ -7,6 +7,7 @@ import org.example.javatest.db.WordRepository;
 import org.example.javatest.game.Palindrome;
 import org.example.javatest.model.UserData;
 import org.example.javatest.model.WordEntry;
+import org.example.javatest.response.PlayerBoardEntry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,7 +75,7 @@ public class LeaderBoardServiceTest {
     @Transactional
     @Test
     public void testUserBoard() {
-        List<WordEntry> list = service.getUserBoard();
+        List<PlayerBoardEntry> list = service.getUserBoard();
         assertEquals(VALID_WORDS.length, list.size());
         assertEquals(WORD_HIGHER_SCORE, list.get(0).getWord());
         assertEquals(WORD_LOWER_SCORE, list.get(list.size() - 1).getWord());

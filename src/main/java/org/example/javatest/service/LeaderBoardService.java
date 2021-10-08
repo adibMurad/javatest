@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.javatest.auth.LoggedUser;
 import org.example.javatest.db.WordRepository;
 import org.example.javatest.model.WordEntry;
+import org.example.javatest.response.PlayerBoardEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,10 @@ public class LeaderBoardService {
     @Value("${game.board.size}")
     private int gameBoardSize;
 
-    public List<WordEntry> getUserBoard() {
+    public List<PlayerBoardEntry> getUserBoard() {
         log.info("{} got own scores", loggedUser.getUserName());
-        return wordRepository.findAllByUserName(loggedUser.getUserName());
+        List<WordEntry> words = wordRepository.findAllByUserName(loggedUser.getUserName());
+        return words.stream().map(PlayerBoardEntry::new).collect(Collectors.toList());
     }
 
     public List<WordEntry> getGlobalBoard() {
