@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    20%
+    11,1%
   </span>
   <span class="absValue">
-    (1/ 5)
+    (1/ 9)
   </span>
 </td>
 </tr>
@@ -74,42 +74,72 @@
 
 <div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.controller;
 <i>2</i>&nbsp;
-<i>3</i>&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
-<i>4</i>&nbsp;import org.example.javatest.model.WordEntry;
-<i>5</i>&nbsp;import org.example.javatest.service.LeaderBoardService;
-<i>6</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-<i>7</i>&nbsp;import org.springframework.http.ResponseEntity;
-<i>8</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
-<i>9</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
-<i>10</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
-<i>11</i>&nbsp;
-<i>12</i>&nbsp;import java.util.List;
-<i>13</i>&nbsp;
-<i>14</i>&nbsp;@RestController
-<i>15</i>&nbsp;@RequestMapping(path = &quot;/board&quot;)
-<i>16</i>&nbsp;@Tag(name = &quot;leader-board-controller&quot;, description = &quot;API to retrieve player scores.&quot;)
-<b class="fc"><i>17</i>&nbsp;public class LeaderBoardController {</b>
-<i>18</i>&nbsp;    @Autowired
-<i>19</i>&nbsp;    private LeaderBoardService service;
-<i>20</i>&nbsp;
-<i>21</i>&nbsp;    @GetMapping(&quot;&quot;)
-<i>22</i>&nbsp;    public ResponseEntity&lt;List&lt;WordEntry&gt;&gt; myBoard() {
-<b class="nc"><i>23</i>&nbsp;        List&lt;WordEntry&gt; result = service.getUserBoard();</b>
-<b class="nc"><i>24</i>&nbsp;        return ResponseEntity.ok(result);</b>
-<i>25</i>&nbsp;    }
-<i>26</i>&nbsp;
-<i>27</i>&nbsp;    @GetMapping(&quot;/global&quot;)
-<i>28</i>&nbsp;    public ResponseEntity&lt;List&lt;WordEntry&gt;&gt; globalBoard() {
-<b class="nc"><i>29</i>&nbsp;        List&lt;WordEntry&gt; result = service.getGlobalBoard();</b>
-<b class="nc"><i>30</i>&nbsp;        return ResponseEntity.ok(result);</b>
-<i>31</i>&nbsp;    }
-<i>32</i>&nbsp;}
+<i>3</i>&nbsp;import io.swagger.annotations.ApiOperation;
+<i>4</i>&nbsp;import io.swagger.annotations.ApiResponse;
+<i>5</i>&nbsp;import io.swagger.annotations.ApiResponses;
+<i>6</i>&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+<i>7</i>&nbsp;import org.example.javatest.model.WordEntry;
+<i>8</i>&nbsp;import org.example.javatest.response.PlayerBoardEntry;
+<i>9</i>&nbsp;import org.example.javatest.service.LeaderBoardService;
+<i>10</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>11</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>12</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;@RestController
+<i>19</i>&nbsp;@RequestMapping(path = &quot;/board&quot;)
+<i>20</i>&nbsp;@Tag(name = &quot;leader-board-controller&quot;, description = &quot;API to retrieve player scores.&quot;)
+<b class="fc"><i>21</i>&nbsp;public class LeaderBoardController {</b>
+<i>22</i>&nbsp;    @Autowired
+<i>23</i>&nbsp;    private LeaderBoardService service;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @ApiOperation(
+<i>26</i>&nbsp;            value = &quot;List the scores of the player own submissions.&quot;,
+<i>27</i>&nbsp;            notes = &quot;List the scores of the player ordered from higher to lower score.\n&quot; +
+<i>28</i>&nbsp;                    &quot;Requires an authorization header &lt;b&gt;&lt;tt&gt;Authorization: Bearer &lt;i&gt;token&lt;/i&gt;&lt;/tt&gt;&lt;/b&gt;.&quot;,
+<i>29</i>&nbsp;            tags = {&quot;leader-board-controller&quot;}
+<i>30</i>&nbsp;    )
+<i>31</i>&nbsp;    @ApiResponses(value = {
+<i>32</i>&nbsp;            @ApiResponse(code = 200, message = &quot;List of words and scores ordered from higher to lower score.&quot;),
+<i>33</i>&nbsp;            @ApiResponse(code = 204, message = &quot;The player don&#39;t have any score yet.&quot;),
+<i>34</i>&nbsp;            @ApiResponse(code = 401, message = &quot;The player is not logged in, its token is invalid or missing.&quot;),
+<i>35</i>&nbsp;            @ApiResponse(code = 500, message = &quot;An unexpected error has occurred. The error has been logged and is being investigated.&quot;)})
+<i>36</i>&nbsp;    @GetMapping(&quot;&quot;)
+<i>37</i>&nbsp;    public ResponseEntity&lt;List&lt;PlayerBoardEntry&gt;&gt; playerBoard() {
+<b class="nc"><i>38</i>&nbsp;        List&lt;PlayerBoardEntry&gt; result = service.getUserBoard();</b>
+<b class="nc"><i>39</i>&nbsp;        if (result.size() &gt; 0)</b>
+<b class="nc"><i>40</i>&nbsp;            return ResponseEntity.ok(result);</b>
+<b class="nc"><i>41</i>&nbsp;        return ResponseEntity.noContent().build();</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @ApiOperation(
+<i>45</i>&nbsp;            value = &quot;List the top 10 scores from all players.&quot;,
+<i>46</i>&nbsp;            notes = &quot;List the top 10 scores from all players, ordered from higher to lower score.&lt;br&gt;Requires an authorization header &lt;b&gt;&lt;tt&gt;Authorization: Bearer &lt;i&gt;token&lt;/i&gt;&lt;/tt&gt;&lt;/b&gt;.&quot;,
+<i>47</i>&nbsp;            tags = {&quot;leader-board-controller&quot;}
+<i>48</i>&nbsp;    )
+<i>49</i>&nbsp;    @ApiResponses(value = {
+<i>50</i>&nbsp;            @ApiResponse(code = 200, message = &quot;List of user names, words and scores ordered from higher to lower score.&quot;),
+<i>51</i>&nbsp;            @ApiResponse(code = 204, message = &quot;No submission has been made yet.&quot;),
+<i>52</i>&nbsp;            @ApiResponse(code = 401, message = &quot;The player is not logged in, its token is invalid or missing.&quot;),
+<i>53</i>&nbsp;            @ApiResponse(code = 500, message = &quot;An unexpected error has occurred. The error has been logged and is being investigated.&quot;)}
+<i>54</i>&nbsp;    )
+<i>55</i>&nbsp;    @GetMapping(&quot;/global&quot;)
+<i>56</i>&nbsp;    public ResponseEntity&lt;List&lt;WordEntry&gt;&gt; globalBoard() {
+<b class="nc"><i>57</i>&nbsp;        List&lt;WordEntry&gt; result = service.getGlobalBoard();</b>
+<b class="nc"><i>58</i>&nbsp;        if (result.size() &gt; 0)</b>
+<b class="nc"><i>59</i>&nbsp;            return ResponseEntity.ok(result);</b>
+<b class="nc"><i>60</i>&nbsp;        return ResponseEntity.noContent().build();</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>

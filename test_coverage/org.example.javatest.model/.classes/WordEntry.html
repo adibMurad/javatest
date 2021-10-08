@@ -55,10 +55,10 @@
 </td>
 </tr>
   <tr>
-    <td class="name">WordEntry$HibernateProxy$IDxdiNMI</td>
+    <td class="name">WordEntry$HibernateProxy$hTSvOf8G</td>
   </tr>
   <tr>
-    <td class="name">WordEntry$HibernateProxy$Ss1s4Ha0</td>
+    <td class="name">WordEntry$HibernateProxy$YjYdLkmQ</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -96,7 +96,7 @@
 <b class="nc"><i>9</i>&nbsp;@Data</b>
 <b class="fc"><i>10</i>&nbsp;@NoArgsConstructor</b>
 <i>11</i>&nbsp;@Entity
-<i>12</i>&nbsp;@Table(name = &quot;words&quot;)
+<i>12</i>&nbsp;@Table(name = &quot;words&quot;, uniqueConstraints = @UniqueConstraint(columnNames = {&quot;user_name&quot;, &quot;word&quot;}))
 <i>13</i>&nbsp;public class WordEntry {
 <i>14</i>&nbsp;    @Id
 <i>15</i>&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,7 +118,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>

@@ -61,7 +61,7 @@
     100%
   </span>
   <span class="absValue">
-    (8/ 8)
+    (9/ 9)
   </span>
 </td>
 </tr>
@@ -80,43 +80,45 @@
 <i>6</i>&nbsp;import org.example.javatest.auth.LoggedUser;
 <i>7</i>&nbsp;import org.example.javatest.db.WordRepository;
 <i>8</i>&nbsp;import org.example.javatest.model.WordEntry;
-<i>9</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-<i>10</i>&nbsp;import org.springframework.beans.factory.annotation.Value;
-<i>11</i>&nbsp;import org.springframework.stereotype.Service;
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;import java.util.List;
-<i>14</i>&nbsp;import java.util.stream.Collectors;
-<i>15</i>&nbsp;
-<i>16</i>&nbsp;@Service
-<b class="fc"><i>17</i>&nbsp;@NoArgsConstructor</b>
-<b class="fc"><i>18</i>&nbsp;@AllArgsConstructor</b>
-<b class="fc"><i>19</i>&nbsp;@Slf4j</b>
-<i>20</i>&nbsp;public class LeaderBoardService {
-<i>21</i>&nbsp;    @Autowired
-<i>22</i>&nbsp;    private LoggedUser loggedUser;
-<i>23</i>&nbsp;    @Autowired
-<i>24</i>&nbsp;    private WordRepository wordRepository;
-<i>25</i>&nbsp;
-<i>26</i>&nbsp;    @Value(&quot;${game.board.size}&quot;)
-<i>27</i>&nbsp;    private int gameBoardSize;
-<i>28</i>&nbsp;
-<i>29</i>&nbsp;    public List&lt;WordEntry&gt; getUserBoard() {
-<b class="fc"><i>30</i>&nbsp;        log.info(&quot;{} got own scores&quot;, loggedUser.getUserName());</b>
-<b class="fc"><i>31</i>&nbsp;        return wordRepository.findAllByUserName(loggedUser.getUserName());</b>
-<i>32</i>&nbsp;    }
-<i>33</i>&nbsp;
-<i>34</i>&nbsp;    public List&lt;WordEntry&gt; getGlobalBoard() {
-<b class="fc"><i>35</i>&nbsp;        List&lt;WordEntry&gt; board = wordRepository.findAll().stream().limit(gameBoardSize).collect(Collectors.toList());</b>
-<b class="fc"><i>36</i>&nbsp;        log.info(&quot;{} got global scores&quot;, loggedUser.getUserName());</b>
-<b class="fc"><i>37</i>&nbsp;        return board;</b>
-<i>38</i>&nbsp;    }
-<i>39</i>&nbsp;}
+<i>9</i>&nbsp;import org.example.javatest.response.PlayerBoardEntry;
+<i>10</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>11</i>&nbsp;import org.springframework.beans.factory.annotation.Value;
+<i>12</i>&nbsp;import org.springframework.stereotype.Service;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;import java.util.stream.Collectors;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;@Service
+<b class="fc"><i>18</i>&nbsp;@NoArgsConstructor</b>
+<b class="fc"><i>19</i>&nbsp;@AllArgsConstructor</b>
+<b class="fc"><i>20</i>&nbsp;@Slf4j</b>
+<i>21</i>&nbsp;public class LeaderBoardService {
+<i>22</i>&nbsp;    @Autowired
+<i>23</i>&nbsp;    private LoggedUser loggedUser;
+<i>24</i>&nbsp;    @Autowired
+<i>25</i>&nbsp;    private WordRepository wordRepository;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    @Value(&quot;${game.board.size}&quot;)
+<i>28</i>&nbsp;    private int gameBoardSize;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public List&lt;PlayerBoardEntry&gt; getUserBoard() {
+<b class="fc"><i>31</i>&nbsp;        log.info(&quot;{} got own scores&quot;, loggedUser.getUserName());</b>
+<b class="fc"><i>32</i>&nbsp;        List&lt;WordEntry&gt; words = wordRepository.findAllByUserName(loggedUser.getUserName());</b>
+<b class="fc"><i>33</i>&nbsp;        return words.stream().map(PlayerBoardEntry::new).collect(Collectors.toList());</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public List&lt;WordEntry&gt; getGlobalBoard() {
+<b class="fc"><i>37</i>&nbsp;        List&lt;WordEntry&gt; board = wordRepository.findAll().stream().limit(gameBoardSize).collect(Collectors.toList());</b>
+<b class="fc"><i>38</i>&nbsp;        log.info(&quot;{} got global scores&quot;, loggedUser.getUserName());</b>
+<b class="fc"><i>39</i>&nbsp;        return board;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>

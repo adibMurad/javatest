@@ -55,10 +55,10 @@
 </td>
 </tr>
   <tr>
-    <td class="name">UserData$HibernateProxy$lZrbcpu4</td>
+    <td class="name">UserData$HibernateProxy$9xBD8nbh</td>
   </tr>
   <tr>
-    <td class="name">UserData$HibernateProxy$ZbHgdWKs</td>
+    <td class="name">UserData$HibernateProxy$iJowMT85</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -95,24 +95,28 @@
 <i>8</i>&nbsp;import javax.persistence.Entity;
 <i>9</i>&nbsp;import javax.persistence.Id;
 <i>10</i>&nbsp;import javax.persistence.Table;
-<i>11</i>&nbsp;
-<b class="fc"><i>12</i>&nbsp;@Data</b>
-<b class="fc"><i>13</i>&nbsp;@AllArgsConstructor</b>
-<b class="fc"><i>14</i>&nbsp;@NoArgsConstructor</b>
-<i>15</i>&nbsp;@Entity
-<i>16</i>&nbsp;@Table(name = &quot;users&quot;)
-<i>17</i>&nbsp;public class UserData {
-<i>18</i>&nbsp;    @Id
-<i>19</i>&nbsp;    @Column(name = &quot;user_name&quot;)
-<b class="fc"><i>20</i>&nbsp;    private String userName;</b>
-<b class="fc"><i>21</i>&nbsp;    private String password;</b>
-<i>22</i>&nbsp;}
+<i>11</i>&nbsp;import javax.validation.constraints.NotBlank;
+<i>12</i>&nbsp;import javax.validation.constraints.NotNull;
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;@Data</b>
+<b class="fc"><i>15</i>&nbsp;@AllArgsConstructor</b>
+<b class="fc"><i>16</i>&nbsp;@NoArgsConstructor</b>
+<i>17</i>&nbsp;@Entity
+<i>18</i>&nbsp;@Table(name = &quot;users&quot;)
+<i>19</i>&nbsp;public class UserData {
+<i>20</i>&nbsp;    @Id
+<i>21</i>&nbsp;    @Column(name = &quot;user_name&quot;)
+<i>22</i>&nbsp;    @NotBlank(message = &quot;User name is mandatory.&quot;)
+<b class="fc"><i>23</i>&nbsp;    private String userName;</b>
+<i>24</i>&nbsp;    @NotNull(message = &quot;Password is mandatory.&quot;)
+<b class="fc"><i>25</i>&nbsp;    private String password;</b>
+<i>26</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>

@@ -81,7 +81,7 @@
 <i>7</i>&nbsp;import org.springframework.web.bind.annotation.RestControllerAdvice;
 <i>8</i>&nbsp;
 <i>9</i>&nbsp;@RestControllerAdvice
-<b class="fc"><i>10</i>&nbsp;public class GameServiceExceptionHandler extends CustomExceptionHandler&lt;GameServiceException&gt; {</b>
+<b class="fc"><i>10</i>&nbsp;public class GameServiceExceptionHandler extends AbstractExceptionHandler&lt;GameServiceException&gt; {</b>
 <i>11</i>&nbsp;    @ExceptionHandler
 <i>12</i>&nbsp;    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 <i>13</i>&nbsp;    @ResponseBody
@@ -94,7 +94,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>

@@ -74,36 +74,60 @@
 
 <div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.controller;
 <i>2</i>&nbsp;
-<i>3</i>&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
-<i>4</i>&nbsp;import org.example.javatest.response.ScoreResponse;
-<i>5</i>&nbsp;import org.example.javatest.service.GameService;
-<i>6</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-<i>7</i>&nbsp;import org.springframework.http.ResponseEntity;
-<i>8</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
-<i>9</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
-<i>10</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
-<i>11</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;@RestController
-<i>14</i>&nbsp;@RequestMapping(path = &quot;/game&quot;)
-<i>15</i>&nbsp;@Tag(name = &quot;game-controller&quot;, description = &quot;API for the game functionality.&quot;)
-<b class="fc"><i>16</i>&nbsp;public class GameController {</b>
-<i>17</i>&nbsp;    @Autowired
-<i>18</i>&nbsp;    private GameService service;
-<i>19</i>&nbsp;
-<i>20</i>&nbsp;    @GetMapping(&quot;/{word}&quot;)
-<i>21</i>&nbsp;    public ResponseEntity&lt;ScoreResponse&gt; palindromeScore(@PathVariable String word) {
-<b class="nc"><i>22</i>&nbsp;        final int score = service.calculateScore(word);</b>
-<b class="nc"><i>23</i>&nbsp;        return ResponseEntity.ok(new ScoreResponse(score));</b>
-<i>24</i>&nbsp;    }
-<i>25</i>&nbsp;
-<i>26</i>&nbsp;}
+<i>3</i>&nbsp;import io.swagger.annotations.ApiOperation;
+<i>4</i>&nbsp;import io.swagger.annotations.ApiResponse;
+<i>5</i>&nbsp;import io.swagger.annotations.ApiResponses;
+<i>6</i>&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+<i>7</i>&nbsp;import org.example.javatest.response.ScoreResponse;
+<i>8</i>&nbsp;import org.example.javatest.service.GameService;
+<i>9</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>10</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>11</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>12</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@RestController
+<i>17</i>&nbsp;@RequestMapping(path = &quot;/game&quot;)
+<i>18</i>&nbsp;@Tag(name = &quot;game-controller&quot;, description = &quot;API for the game functionality.&quot;)
+<b class="fc"><i>19</i>&nbsp;public class GameController {</b>
+<i>20</i>&nbsp;    @Autowired
+<i>21</i>&nbsp;    private GameService service;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @ApiOperation(
+<i>24</i>&nbsp;            value = &quot;Score points if the word/phrase is a valid palindrome.&quot;,
+<i>25</i>&nbsp;            notes = &quot;The player will score points if the word/phrase is a valid palindrome, meaning that after removing all non-alphanumeric characters:\n&quot; +
+<i>26</i>&nbsp;                    &quot;     &lt;li&gt;word/phrase cannot be null, empty or contain only one distinct character.\n&quot; +
+<i>27</i>&nbsp;                    &quot;     &lt;li&gt;word/phrase must read the same in reverse order.\n\n&quot; +
+<i>28</i>&nbsp;                    &quot; The player gets score based on the number of unique characters&quot; +
+<i>29</i>&nbsp;                    &quot; in the word/phrase, discarding whitespaces and punctuations.\n&quot; +
+<i>30</i>&nbsp;                    &quot; Examples:\n&quot; +
+<i>31</i>&nbsp;                    &quot;     &lt;li&gt;thala laht - score 4 (t,h,a,l)\n&quot; +
+<i>32</i>&nbsp;                    &quot;     &lt;li&gt;xoxoxox ox oxo xo!x ox .oxox-oxoxoxoxoxox - score 2 (x, o)\n&quot; +
+<i>33</i>&nbsp;                    &quot;     &lt;li&gt;Socorram-me, subi no onibus em Marrocos. - score 11 (s, o, c, r, a, m, e, u, b, i, n)\n\n&quot; +
+<i>34</i>&nbsp;                    &quot;Requires an authorization header &lt;b&gt;&lt;tt&gt;Authorization: Bearer &lt;i&gt;token&lt;/i&gt;&lt;/tt&gt;&lt;/b&gt;.&quot;,
+<i>35</i>&nbsp;            tags = {&quot;game-controller&quot;}
+<i>36</i>&nbsp;    )
+<i>37</i>&nbsp;    @ApiResponses(value = {
+<i>38</i>&nbsp;            @ApiResponse(code = 200, message = &quot;The player scored! Word and its score were successfully recorded.&quot;),
+<i>39</i>&nbsp;            @ApiResponse(code = 400, message = &quot;The submitted word/phrase is not a valid palindrome.&quot;),
+<i>40</i>&nbsp;            @ApiResponse(code = 401, message = &quot;The player is not logged in, its token is invalid or missing.&quot;),
+<i>41</i>&nbsp;            @ApiResponse(code = 422, message = &quot;Duplicated entry. The word/phrase was already scored by this player before.&quot;),
+<i>42</i>&nbsp;            @ApiResponse(code = 500, message = &quot;An unexpected error has occurred. The error has been logged and is being investigated.&quot;)}
+<i>43</i>&nbsp;    )
+<i>44</i>&nbsp;    @GetMapping(&quot;/{word}&quot;)
+<i>45</i>&nbsp;    public ResponseEntity&lt;ScoreResponse&gt; palindromeScore(@PathVariable String word) {
+<b class="nc"><i>46</i>&nbsp;        final int score = service.calculateScore(word);</b>
+<b class="nc"><i>47</i>&nbsp;        return ResponseEntity.ok(new ScoreResponse(score));</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-10-08 15:53</div>
+    <div style="float:right;">generated on 2021-10-08 21:14</div>
 </div>
 </body>
 </html>
