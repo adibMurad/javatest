@@ -1,0 +1,67 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: WordRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.example.javatest.db</a> ]
+</div>
+
+<h1>Coverage Summary for Class: WordRepository (org.example.javatest.db)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">WordRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.db;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.example.javatest.model.WordEntry;
+<i>4</i>&nbsp;import org.springframework.data.jpa.repository.Modifying;
+<i>5</i>&nbsp;import org.springframework.data.jpa.repository.Query;
+<i>6</i>&nbsp;import org.springframework.data.repository.CrudRepository;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface WordRepository extends CrudRepository&lt;WordEntry, String&gt; {
+<i>11</i>&nbsp;    @Query(&quot;from WordEntry where userName = :userName order by score desc&quot;)
+<i>12</i>&nbsp;    List&lt;WordEntry&gt; findAllByUserName(String userName);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    @Query(&quot;from WordEntry order by score desc&quot;)
+<i>15</i>&nbsp;    List&lt;WordEntry&gt; findAll();
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @Modifying
+<i>18</i>&nbsp;    @Query(&quot;delete from WordEntry where userName = :userName&quot;)
+<i>19</i>&nbsp;    void deleteAllByUserName(String userName);
+<i>20</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-10-08 15:53</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AuthorizationFilter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.example.javatest.auth</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AuthorizationFilter (org.example.javatest.auth)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthorizationFilter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (2/ 20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.auth;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import lombok.AllArgsConstructor;
+<i>4</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>5</i>&nbsp;import org.example.javatest.token.TokenHelper;
+<i>6</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.servlet.*;
+<i>9</i>&nbsp;import javax.servlet.http.HttpServletRequest;
+<i>10</i>&nbsp;import javax.servlet.http.HttpServletResponse;
+<i>11</i>&nbsp;import java.io.IOException;
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;@Slf4j</b>
+<b class="fc"><i>14</i>&nbsp;@AllArgsConstructor</b>
+<i>15</i>&nbsp;public class AuthorizationFilter implements Filter {
+<i>16</i>&nbsp;    @Autowired
+<i>17</i>&nbsp;    private final LoggedUser loggedUser;
+<i>18</i>&nbsp;    @Autowired
+<i>19</i>&nbsp;    private final TokenHelper tokenHelper;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private void sendError(HttpServletResponse resp, String msg) throws IOException {
+<b class="nc"><i>22</i>&nbsp;        log.error(msg);</b>
+<b class="nc"><i>23</i>&nbsp;        resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);</b>
+<b class="nc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @Override
+<i>27</i>&nbsp;    public void doFilter(ServletRequest request,
+<i>28</i>&nbsp;                         ServletResponse response,
+<i>29</i>&nbsp;                         FilterChain chain) throws IOException, ServletException {
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;        HttpServletRequest req = (HttpServletRequest) request;</b>
+<b class="nc"><i>32</i>&nbsp;        HttpServletResponse resp = (HttpServletResponse) response;</b>
+<b class="nc"><i>33</i>&nbsp;        String auth = req.getHeader(&quot;Authorization&quot;);</b>
+<b class="nc"><i>34</i>&nbsp;        String token = auth != null ? auth.substring(&quot;Bearer&quot;.length()).trim() : null;</b>
+<b class="nc"><i>35</i>&nbsp;        if (token == null) {</b>
+<b class="nc"><i>36</i>&nbsp;            sendError(resp, &quot;Token required. Please provide a header &#39;Authorization: Bearer &lt;token&gt;&#39;.&quot;);</b>
+<b class="nc"><i>37</i>&nbsp;            return;</b>
+<i>38</i>&nbsp;        }
+<b class="nc"><i>39</i>&nbsp;        if (!tokenHelper.isValid(token)) {</b>
+<b class="nc"><i>40</i>&nbsp;            sendError(resp, &quot;Invalid token&quot;);</b>
+<b class="nc"><i>41</i>&nbsp;            return;</b>
+<i>42</i>&nbsp;        }
+<b class="nc"><i>43</i>&nbsp;        final String userName = tokenHelper.getUserName(token);</b>
+<b class="nc"><i>44</i>&nbsp;        log.info(&quot;{} made a request.&quot;, userName);</b>
+<b class="nc"><i>45</i>&nbsp;        loggedUser.setUserName(userName);</b>
+<b class="nc"><i>46</i>&nbsp;        chain.doFilter(request, response);</b>
+<b class="nc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-10-08 15:53</div>
+</div>
+</body>
+</html>

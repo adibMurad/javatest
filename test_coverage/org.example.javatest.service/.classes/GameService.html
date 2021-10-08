@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.example.javatest.service</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameService (org.example.javatest.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84,6%
+  </span>
+  <span class="absValue">
+    (11/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.service;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import lombok.AllArgsConstructor;
+<i>4</i>&nbsp;import lombok.NoArgsConstructor;
+<i>5</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>6</i>&nbsp;import org.example.javatest.auth.LoggedUser;
+<i>7</i>&nbsp;import org.example.javatest.db.WordRepository;
+<i>8</i>&nbsp;import org.example.javatest.exception.GameServiceException;
+<i>9</i>&nbsp;import org.example.javatest.game.Palindrome;
+<i>10</i>&nbsp;import org.example.javatest.model.WordEntry;
+<i>11</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>12</i>&nbsp;import org.springframework.dao.DataIntegrityViolationException;
+<i>13</i>&nbsp;import org.springframework.stereotype.Service;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;@Service
+<b class="fc"><i>16</i>&nbsp;@NoArgsConstructor</b>
+<b class="fc"><i>17</i>&nbsp;@AllArgsConstructor</b>
+<b class="fc"><i>18</i>&nbsp;@Slf4j</b>
+<i>19</i>&nbsp;public class GameService {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @Autowired
+<i>22</i>&nbsp;    private LoggedUser loggedUser;
+<i>23</i>&nbsp;    @Autowired
+<i>24</i>&nbsp;    private WordRepository wordRepository;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    private void saveScore(String word, int score) {
+<b class="fc"><i>27</i>&nbsp;        final WordEntry entry = new WordEntry(loggedUser.getUserName(), word, score);</b>
+<i>28</i>&nbsp;        try {
+<b class="fc"><i>29</i>&nbsp;            wordRepository.save(entry);</b>
+<b class="nc"><i>30</i>&nbsp;        } catch (DataIntegrityViolationException e) {</b>
+<b class="nc"><i>31</i>&nbsp;            throw new GameServiceException(String.format(&quot;Word &#39;%s&#39; already scored by the player.&quot;, entry.getWord()), e);</b>
+<b class="fc"><i>32</i>&nbsp;        }</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public int calculateScore(String word) {
+<b class="fc"><i>36</i>&nbsp;        int score = Palindrome.fromString(word).score();</b>
+<b class="fc"><i>37</i>&nbsp;        saveScore(word, score);</b>
+<b class="fc"><i>38</i>&nbsp;        log.info(&quot;{} scored {}&quot;, loggedUser.getUserName(), score);</b>
+<b class="fc"><i>39</i>&nbsp;        return score;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-10-08 15:53</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: JavatestApplication</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">org.example.javatest.application</a> ]
+</div>
+
+<h1>Coverage Summary for Class: JavatestApplication (org.example.javatest.application)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JavatestApplication</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (12/ 14)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JavatestApplication$$EnhancerBySpringCGLIB$$220c15ae</td>
+  </tr>
+  <tr>
+    <td class="name">JavatestApplication$$EnhancerBySpringCGLIB$$220c15ae$$FastClassBySpringCGLIB$$475f53e2</td>
+  </tr>
+  <tr>
+    <td class="name">JavatestApplication$$FastClassBySpringCGLIB$$fb9382d2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (12/ 14)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package org.example.javatest.application;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.example.javatest.auth.AuthorizationFilter;
+<i>4</i>&nbsp;import org.example.javatest.auth.LoggedUser;
+<i>5</i>&nbsp;import org.example.javatest.controller.AuthenticationController;
+<i>6</i>&nbsp;import org.example.javatest.db.UserRepository;
+<i>7</i>&nbsp;import org.example.javatest.exception.CreationExceptionHandler;
+<i>8</i>&nbsp;import org.example.javatest.model.UserData;
+<i>9</i>&nbsp;import org.example.javatest.model.WordEntry;
+<i>10</i>&nbsp;import org.example.javatest.service.AuthenticationService;
+<i>11</i>&nbsp;import org.example.javatest.token.TokenHelper;
+<i>12</i>&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+<i>13</i>&nbsp;import org.springframework.boot.SpringApplication;
+<i>14</i>&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
+<i>15</i>&nbsp;import org.springframework.boot.autoconfigure.domain.EntityScan;
+<i>16</i>&nbsp;import org.springframework.boot.web.servlet.FilterRegistrationBean;
+<i>17</i>&nbsp;import org.springframework.context.annotation.Bean;
+<i>18</i>&nbsp;import org.springframework.context.annotation.ComponentScan;
+<i>19</i>&nbsp;import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+<i>20</i>&nbsp;import springfox.documentation.builders.PathSelectors;
+<i>21</i>&nbsp;import springfox.documentation.builders.RequestHandlerSelectors;
+<i>22</i>&nbsp;import springfox.documentation.spi.DocumentationType;
+<i>23</i>&nbsp;import springfox.documentation.spring.web.plugins.Docket;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;@SpringBootApplication
+<i>26</i>&nbsp;@ComponentScan(basePackageClasses = {
+<i>27</i>&nbsp;        AuthenticationController.class,
+<i>28</i>&nbsp;        AuthenticationService.class,
+<i>29</i>&nbsp;        AuthorizationFilter.class,
+<i>30</i>&nbsp;        LoggedUser.class,
+<i>31</i>&nbsp;        CreationExceptionHandler.class
+<i>32</i>&nbsp;})
+<i>33</i>&nbsp;@EntityScan(basePackageClasses = {UserData.class, WordEntry.class})
+<i>34</i>&nbsp;@EnableJpaRepositories(basePackageClasses = UserRepository.class)
+<b class="fc"><i>35</i>&nbsp;public class JavatestApplication {</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    @Bean
+<i>38</i>&nbsp;    public FilterRegistrationBean&lt;AuthorizationFilter&gt; authorizationFilter(@Qualifier(&quot;loggedUser&quot;) LoggedUser loggedUser,
+<i>39</i>&nbsp;                                                                           @Qualifier(&quot;tokenHelper&quot;) TokenHelper tokenHelper) {
+<b class="fc"><i>40</i>&nbsp;        FilterRegistrationBean&lt;AuthorizationFilter&gt; registrationBean = new FilterRegistrationBean&lt;&gt;();</b>
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;        registrationBean.setFilter(new AuthorizationFilter(loggedUser, tokenHelper));</b>
+<b class="fc"><i>43</i>&nbsp;        registrationBean.addUrlPatterns(&quot;/game/*&quot;, &quot;/board/*&quot;);</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;        return registrationBean;</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    @Bean(name = &quot;loggedUser&quot;)
+<i>49</i>&nbsp;    public LoggedUser loggedUser() {
+<b class="fc"><i>50</i>&nbsp;        return new LoggedUser();</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    @Bean(name = &quot;tokenHelper&quot;)
+<i>54</i>&nbsp;    public TokenHelper tokenHelper() {
+<b class="fc"><i>55</i>&nbsp;        return new TokenHelper();</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    @Bean
+<i>59</i>&nbsp;    public Docket api() {
+<b class="fc"><i>60</i>&nbsp;        return new Docket(DocumentationType.SWAGGER_2)</b>
+<b class="fc"><i>61</i>&nbsp;                .select()</b>
+<b class="fc"><i>62</i>&nbsp;                .apis(RequestHandlerSelectors.basePackage(&quot;org.example.javatest.controller&quot;))</b>
+<b class="fc"><i>63</i>&nbsp;                .paths(PathSelectors.any())</b>
+<b class="fc"><i>64</i>&nbsp;                .build();</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>68</i>&nbsp;        SpringApplication.run(JavatestApplication.class, args);</b>
+<b class="nc"><i>69</i>&nbsp;    }</b>
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2021-10-08 15:53</div>
+</div>
+</body>
+</html>
