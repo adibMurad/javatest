@@ -1,5 +1,6 @@
 package org.example.javatest.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.javatest.model.WordEntry;
 import org.example.javatest.service.LeaderBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/board")
+@Tag(name = "leader-board-controller", description = "API to retrieve player scores.")
 public class LeaderBoardController {
     @Autowired
     private LeaderBoardService service;

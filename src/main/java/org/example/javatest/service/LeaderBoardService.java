@@ -1,5 +1,7 @@
 package org.example.javatest.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.example.javatest.db.WordRepository;
 import org.example.javatest.model.WordEntry;
 import org.example.javatest.util.LoggedUser;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class LeaderBoardService {
     @Autowired
     private LoggedUser loggedUser;

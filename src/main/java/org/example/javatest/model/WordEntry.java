@@ -1,16 +1,12 @@
 package org.example.javatest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "words")
@@ -23,4 +19,10 @@ public class WordEntry {
     private String userName;
     private String word;
     private int score;
+
+    public WordEntry(String userName, String word, int score) {
+        this.userName = userName;
+        this.word = word;
+        this.score = score;
+    }
 }

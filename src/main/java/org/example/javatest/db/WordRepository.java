@@ -1,6 +1,7 @@
 package org.example.javatest.db;
 
 import org.example.javatest.model.WordEntry;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,4 +13,8 @@ public interface WordRepository extends CrudRepository<WordEntry, String> {
 
     @Query("from WordEntry order by score desc")
     List<WordEntry> findAll();
+
+    @Modifying
+    @Query("delete from WordEntry where userName = :userName")
+    void deleteAllByUserName(String userName);
 }

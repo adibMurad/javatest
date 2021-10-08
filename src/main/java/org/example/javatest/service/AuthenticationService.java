@@ -1,5 +1,7 @@
 package org.example.javatest.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.example.javatest.db.UserRepository;
 import org.example.javatest.model.UserData;
 import org.example.javatest.util.TokenHelper;
@@ -10,32 +12,35 @@ import org.springframework.util.DigestUtils;
 import java.nio.charset.StandardCharsets;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthenticationService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private TokenHelper tokenHelper;
 
-    private String encodePassword(String password) {
+    String encodePassword(String password) {
         return DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
     }
 
-    public void register(UserData userData) throws ServiceException {
-        if (userRepository.findByUserName(userData.getUserName()) != null) {
+    public void register(String userName, String password) throws ServiceException {
+        if (userRepository.findByUserName(userName) != null) {
             throw new ServiceException("User name already exists.");
         }
-        userData.setPassword(encodePassword(userData.getPassword()));
+        UserData userData = new UserData(userName, password);
+        userData.setPassword(encodePassword(password));
         userRepository.save(userData);
     }
 
-    public String login(UserData userData) throws ServiceException {
-        UserData foundUser = userRepository.findByUserName(userData.getUserName());
+    public String login(String userName, String password) throws ServiceException {
+        UserData foundUser = userRepository.findByUserName(userName);
         if (foundUser == null) {
             throw new ServiceException("User name does not exist.");
         }
-        if (!foundUser.getPassword().equals(encodePassword(userData.getPassword()))) {
+        if (!foundUser.getPassword().equals(encodePassword(password))) {
             throw new ServiceException("Invalid password.");
         }
-        return tokenHelper.create(userData.getUserName());
+        return tokenHelper.create(userName);
     }
 }

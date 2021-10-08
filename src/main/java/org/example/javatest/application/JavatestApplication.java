@@ -26,8 +26,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EntityScan(basePackageClasses = {UserData.class, WordEntry.class})
 @EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class JavatestApplication {
+
     @Bean
-    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter(@Qualifier("loggedUser") LoggedUser loggedUser, @Qualifier("tokenHelper") TokenHelper tokenHelper) {
+    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter(@Qualifier("loggedUser") LoggedUser loggedUser,
+                                                                           @Qualifier("tokenHelper") TokenHelper tokenHelper) {
         FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new AuthorizationFilter(loggedUser, tokenHelper));
