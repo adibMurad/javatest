@@ -16,4 +16,4 @@ CREATE TABLE words (
 
 ALTER TABLE words ADD FOREIGN KEY (user_name) REFERENCES users(user_name);
 
-CREATE UNIQUE INDEX ON words(user_name, word)
+CREATE UNIQUE INDEX IDX_USER_WORD ON words(user_name, word);

@@ -1,6 +1,7 @@
 package org.example.javatest.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.javatest.response.ScoreResponse;
 import org.example.javatest.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,9 @@ public class GameController {
     private GameService service;
 
     @GetMapping("/{word}")
-    public ResponseEntity<String> palindromeScore(@PathVariable String word) {
-        try {
-            final int score = service.calculateScore(word);
-            return ResponseEntity.ok(Integer.toString(score));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<ScoreResponse> palindromeScore(@PathVariable String word) {
+        final int score = service.calculateScore(word);
+        return ResponseEntity.ok(new ScoreResponse(score));
     }
 
 }

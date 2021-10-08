@@ -2,10 +2,11 @@ package org.example.javatest.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.javatest.model.UserData;
+import org.example.javatest.response.LoginResponse;
+import org.example.javatest.response.RegisterResponse;
 import org.example.javatest.service.AuthenticationService;
-import org.example.javatest.service.ServiceException;
+import org.example.javatest.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,23 +23,17 @@ public class AuthenticationController {
     private AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserData userData) {
-        try {
-            service.register(userData.getUserName(), userData.getPassword());
-            return ResponseEntity.created(URI.create(userData.getUserName())).body(userData.getUserName());
-        } catch (ServiceException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<RegisterResponse> register(@RequestBody UserData userData) {
+        service.register(userData.getUserName(), userData.getPassword());
+        return ResponseEntity
+                .created(URI.create(userData.getUserName()))
+                .body(new RegisterResponse(userData.getUserName()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserData userData) {
-        try {
-            String token = service.login(userData.getUserName(), userData.getPassword());
-            return ResponseEntity.ok(token);
-        } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
+    public ResponseEntity<LoginResponse> login(@RequestBody UserData userData) {
+        Token token = service.login(userData.getUserName(), userData.getPassword());
+        return ResponseEntity.ok(LoginResponse.fromToken(token));
     }
 
 }

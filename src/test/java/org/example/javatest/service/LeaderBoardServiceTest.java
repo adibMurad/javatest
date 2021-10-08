@@ -1,18 +1,19 @@
 package org.example.javatest.service;
 
 import org.example.javatest.application.JavatestApplication;
+import org.example.javatest.auth.LoggedUser;
 import org.example.javatest.db.UserRepository;
 import org.example.javatest.db.WordRepository;
 import org.example.javatest.game.Palindrome;
 import org.example.javatest.model.UserData;
 import org.example.javatest.model.WordEntry;
-import org.example.javatest.util.LoggedUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JavatestApplication.class)
+@TestPropertySource("classpath:application.properties")
 public class LeaderBoardServiceTest {
+    private static final int GAME_BOARD_SIZE = 10;
+
     private static final String USER1 = "userTest1";
     private static final String USER2 = "userTest2";
     private static final String PASSWORD = "password";
@@ -45,9 +49,7 @@ public class LeaderBoardServiceTest {
 
     @BeforeEach
     public void before() {
-        LoggedUser loggedUser = new LoggedUser();
-        loggedUser.setUserName(USER1);
-        service = new LeaderBoardService(loggedUser, wordRepository);
+        service = new LeaderBoardService(new LoggedUser(USER1), wordRepository, GAME_BOARD_SIZE);
 
         UserData userData = new UserData(USER1, PASSWORD);
         userRepository.save(userData);

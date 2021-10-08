@@ -1,4 +1,4 @@
-package org.example.javatest.util;
+package org.example.javatest.token;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TokenHelperTests {
     private static final String USER_NAME_TEST = "johndoe";
+    private static final int TOKEN_EXPIRATION_SECONDS = 300;
+    private static final String TOKEN_ALGORITHM = "HS256";
+    private static final String TOKEN_SECRET = "cEyNlCLPoP9DFZAsOIaDeVnknxy6yciyEFcQ5LvhotKSi9aVH8oKTzU4Wj0ij6GM";
 
     private String tokenOk;
     private String tokenNoUser;
@@ -14,9 +17,9 @@ public class TokenHelperTests {
 
     @BeforeEach
     public void before() {
-        tokenHelper = new TokenHelper();
-        tokenNoUser = tokenHelper.create(null);
-        tokenOk = tokenHelper.create(USER_NAME_TEST);
+        tokenHelper = new TokenHelper(TOKEN_ALGORITHM, TOKEN_SECRET, TOKEN_EXPIRATION_SECONDS);
+        tokenNoUser = tokenHelper.create(null).getCompact();
+        tokenOk = tokenHelper.create(USER_NAME_TEST).getCompact();
     }
 
     @Test
@@ -36,7 +39,7 @@ public class TokenHelperTests {
 
     @Test
     public void testCreate() {
-        String token = tokenHelper.create("johndoe");
+        String token = tokenHelper.create("johndoe").getCompact();
     }
 
 }

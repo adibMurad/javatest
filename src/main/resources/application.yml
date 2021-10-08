@@ -1,0 +1,30 @@
+spring:
+  # H2
+  h2.console:
+    enabled: true
+    path: /h2
+    settings.web-allow-others: true
+  # Datasource
+  datasource:
+    url: jdbc:h2:file:~/javatestdb
+    username: usr
+    password: pwd
+    driver-class-name: org.h2.Driver
+  jpa.hibernate.ddl-auto: update
+  # JSON
+  jackson.date-format: yyyy-MM-dd HH:mm:ss
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+
+game:
+  board.size: 10
+
+token:
+  expiration.seconds: 300
+  algorithm: HS256
+  secret: cEyNlCLPoP9DFZAsOIaDeVnknxy6yciyEFcQ5LvhotKSi9aVH8oKTzU4Wj0ij6GM
