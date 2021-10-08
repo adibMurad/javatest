@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "words")
+@Table(name = "words", uniqueConstraints = @UniqueConstraint(columnNames = {"user_name", "word"}))
 public class WordEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
