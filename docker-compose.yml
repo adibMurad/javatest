@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    image: openjdk:16-alpine3.13
+    command: sh -c "./mvnw spring-boot:run"
+    ports:
+      - 8080:8080
+    working_dir: /app
+    volumes:
+      - javatestdb:/root
+
+volumes:
+  javatestdb:
